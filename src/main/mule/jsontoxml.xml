@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:file="http://www.mulesoft.org/schema/mule/file" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+	xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd
+http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/file/current/mule-file.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c1a6bb0c-ed33-4052-b98b-dd11f59ae208" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<file:config name="File_Config" doc:name="File Config" doc:id="63332cda-8b48-4116-81fb-4ecdbc8c3fb9" >
+		<file:connection workingDir="F:\Mulesoft\output" />
+	</file:config>
+	<flow name="jsontoxmlFlow" doc:id="a6ffebd0-cf1c-4d19-adf8-92535eb1741b" >
+		<http:listener doc:name="Listener" doc:id="e266be7e-7631-474e-b219-47520a032464" config-ref="HTTP_Listener_config" path="/"/>
+		<logger level="INFO" doc:name="Data in JSON Format" doc:id="c552b36d-9838-410b-8e92-e00d9b59b187" message="Data Received"/>
+		<ee:transform doc:name="Transform Message" doc:id="687c8a0b-e614-4d6e-9d74-051dcb7f4307" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	accounts: {
+		(payload map ( payload01 , indexOfPayload01 ) -> {
+			account: {
+				id: payload01.id,
+				name: payload01.name,
+				"type": payload01."type",
+				address: payload01.address,
+				air_miles: payload01.air_miles,
+				created_at: payload01.created_at as DateTime
+			}
+		})
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<set-payload value='#[payload]' doc:name="Set Payload" doc:id="ee6df621-87b2-456f-b9bd-bcb295954d68" />
+		<error-handler >
+			<on-error-continue enableNotifications="true" logException="true" doc:name="On Error Continue" doc:id="f53447ad-9c54-4773-ba1d-4469dcde2941" >
+				<set-payload value='#["Error occurred while creating file"]' doc:name="Set Payload" doc:id="629ecf79-3bfb-4467-ab8b-1bb0210be3d0" />
+			</on-error-continue>
+		</error-handler>
+	</flow>
+</mule>

@@ -1,0 +1,18 @@
+<accounts>
+    <account>
+        <id>4429</id>
+        <name>Wendy Crafts</name>
+        <type>business</type>
+        <address>982 Cherry Ave,Chennai,TN,25362,india</address>
+        <air_miles> 90000</air_miles>
+        <created_at>2010-01-06T00:42:34</created_at>
+    </account>
+     <account>
+        <id>4430</id>
+        <name>Phani</name>
+        <type>business</type>
+        <address>972 Cherry Ave,Chennai,TN,25362,india</address>
+        <air_miles> 100000</air_miles>
+        <created_at>2010-02-06T00:42:34</created_at>
+    </account>
+</accounts>
