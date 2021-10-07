@@ -9,9 +9,7 @@ http://www.mulesoft.org/schema/mule/file http://www.mulesoft.org/schema/mule/fil
 	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="c1a6bb0c-ed33-4052-b98b-dd11f59ae208" >
 		<http:listener-connection host="0.0.0.0" port="8081" />
 	</http:listener-config>
-	<file:config name="File_Config" doc:name="File Config" doc:id="63332cda-8b48-4116-81fb-4ecdbc8c3fb9" >
-		<file:connection workingDir="F:\Mulesoft\output" />
-	</file:config>
+	
 	<flow name="jsontoxmlFlow" doc:id="a6ffebd0-cf1c-4d19-adf8-92535eb1741b" >
 		<http:listener doc:name="Listener" doc:id="e266be7e-7631-474e-b219-47520a032464" config-ref="HTTP_Listener_config" path="/"/>
 		<logger level="INFO" doc:name="Data in JSON Format" doc:id="c552b36d-9838-410b-8e92-e00d9b59b187" message="Data Received"/>
